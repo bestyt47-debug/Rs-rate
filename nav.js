@@ -37,11 +37,11 @@
   var HOME_IDS = ["go-home", "champ-go-home", "gc-go-home", "gc-poster-go-home", "roast-go-home", "tool-rate"];
 
   var FOCUS_MAP = {
-    "compare.html": "cmp-input-1",
+    "Compare-2-usernames.html": "cmp-input-1",
     "versus.html": "cmp-input-1",
-    "roast.html": "roast-input",
+    "Roast-my-username.html": "roast-input",
     "hype.html": "gc-name",
-    "championship.html": "champ-input-1"
+    "Ultimate-championship.html": "champ-input-1"
   };
 
   ready(function () {

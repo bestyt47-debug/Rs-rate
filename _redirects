@@ -1,2 +1,11 @@
 https://ratemyusername.pages.dev/* https://ratemyusername.fun 301!
+
+# Old short filenames -> new SEO-friendly filenames.
+# Must come before the SPA catch-all below, or that rule would
+# intercept these paths first and serve index.html with a 200
+# instead of redirecting.
+/roast.html /Roast-my-username.html 301
+/compare.html /Compare-2-usernames.html 301
+/championship.html /Ultimate-championship.html 301
+
 /* /index.html 200
