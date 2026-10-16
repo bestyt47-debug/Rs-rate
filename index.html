@@ -1110,16 +1110,16 @@
 /* Sends the browser to each feature's own dedicated page instead of just
    switching the in-page view, so the URL changes to match the feature
    (e.g. clicking "Compare 2 Usernames" here goes to
-   /Compare-2-usernames.html). Purely additive: it does not remove or
+   /compare.html). Purely additive: it does not remove or
    alter any of the existing click handlers in script.js/auth.js/
    leaderboard.js -- it just also navigates once they've run. */
 (function () {
   var FEATURE_PAGES = {
-    "tool-compare": "Compare-2-usernames.html",
+    "tool-compare": "compare.html",
     "tool-ogbio": "Get-OG-BIO.html",
-    "tool-championship": "Ultimate-championship.html",
+    "tool-championship": "championship.html",
     "tool-gamecard": "Gamecard.html",
-    "tool-roast": "Roast-my-username.html",
+    "tool-roast": "roast.html",
     "leaderboard-toggle": "leaderboard.html",
     "auth-toggle": "signup/signin.html"
   };
