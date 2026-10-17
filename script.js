@@ -29,6 +29,45 @@
     return (raw || "").trim().replace(/^@+/, "");
   }
 
+  /* ========================================================
+     CONTENT SAFETY FILTER
+     --------------------------------------------------------
+     Baseline blocklist so typed handles can't carry slurs,
+     hate speech, or explicit terms onto anything that gets
+     displayed back (results, share cards, the public
+     leaderboard). Normalizes common leetspeak / separator
+     tricks before matching so "n1gg3r" or "n_i_g_g_e_r" is
+     still caught, not just the exact spelling.
+     This is a baseline, not a complete solution — consider
+     pairing it with a maintained moderation list/service for
+     stronger coverage over time.
+     ======================================================== */
+  const BLOCKED_TERMS = [
+    "nigger","nigga","chink","spic","kike","faggot","fag","tranny",
+    "retard","retarded","coon","gook","wetback","beaner","paki",
+    "cripple","towelhead","cunt","whore","slut","rape","rapist",
+    "pedo","pedophile","nazi","hitler","kys","killyourself","suicide"
+  ];
+
+  function normalizeForFilter(raw){
+    return (raw || "")
+      .toLowerCase()
+      .replace(/[@4]/g, "a")
+      .replace(/[3]/g, "e")
+      .replace(/[1!|]/g, "i")
+      .replace(/[0]/g, "o")
+      .replace(/[5$]/g, "s")
+      .replace(/[7]/g, "t")
+      .replace(/[^a-z]/g, "") // strip separators: _ . - digits left over, spaces, etc.
+      .replace(/(.)\1{2,}/g, "$1$1"); // collapse 3+ repeated letters down to 2
+  }
+
+  function hasBlockedContent(raw){
+    const normalized = normalizeForFilter(raw);
+    if (!normalized) return false;
+    return BLOCKED_TERMS.some(term => normalized.includes(term));
+  }
+
   // core deterministic analysis — same name always produces same numbers
   function scoreUsername(rawName){
     const name = cleanHandle(rawName);
@@ -398,6 +437,7 @@
     if (!name) return "type something first, we can't rate silence.";
     if (/\s/.test(trimmed)) return "usernames don't have spaces, bestie.";
     if (!/[a-z0-9]/i.test(name)) return "we need at least one real character in there.";
+    if (hasBlockedContent(name)) return "let's keep it clean — try a different username.";
     return null;
   }
 
@@ -2449,6 +2489,7 @@
       if (!name) return "type something first, we can't roast silence.";
       if (/\s/.test(trimmed)) return "usernames don't have spaces, bestie.";
       if (!/[a-z0-9]/i.test(name)) return "we need at least one real character to roast.";
+      if (hasBlockedContent(name)) return "let's keep it clean — try a different username.";
       return null;
     }
 

@@ -54,3 +54,48 @@ create policy "update own leaderboard entry"
 
 -- No delete policy — the app never removes a leaderboard entry; a user's
 -- position is simply overwritten (upserted) on their next rate.
+
+-- ============================================================
+-- Content safety: block slurs/profanity at the database layer too.
+-- The app's JS filter (script.js, hasBlockedContent) already stops
+-- most bad input before it's sent, but that's client-side only —
+-- anyone calling the Supabase API directly could bypass it. This
+-- trigger re-checks on every insert/update so the public leaderboard
+-- can't carry blocked terms even via a direct API call.
+-- Keep this list in sync with BLOCKED_TERMS in script.js.
+-- ============================================================
+create or replace function public.leaderboard_username_guard()
+returns trigger as $$
+declare
+  normalized text;
+  blocked_terms text[] := array[
+    'nigger','nigga','chink','spic','kike','faggot','fag','tranny',
+    'retard','retarded','coon','gook','wetback','beaner','paki',
+    'cripple','towelhead','cunt','whore','slut','rape','rapist',
+    'pedo','pedophile','nazi','hitler','kys','killyourself','suicide'
+  ];
+  term text;
+begin
+  normalized := lower(new.username);
+  normalized := replace(replace(normalized, '@', 'a'), '4', 'a');
+  normalized := replace(normalized, '3', 'e');
+  normalized := replace(replace(replace(normalized, '1', 'i'), '!', 'i'), '|', 'i');
+  normalized := replace(normalized, '0', 'o');
+  normalized := replace(replace(normalized, '5', 's'), '$', 's');
+  normalized := replace(normalized, '7', 't');
+  normalized := regexp_replace(normalized, '[^a-z]', '', 'g');
+
+  foreach term in array blocked_terms loop
+    if normalized like '%' || term || '%' then
+      raise exception 'username contains blocked content';
+    end if;
+  end loop;
+
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists leaderboard_username_guard_trigger on public.leaderboard_entries;
+create trigger leaderboard_username_guard_trigger
+  before insert or update on public.leaderboard_entries
+  for each row execute function public.leaderboard_username_guard();
