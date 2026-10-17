@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
   <url><loc>https://ratemyusername.fun/</loc><priority>1.00</priority></url>
-  <url><loc>https://ratemyusername.fun/roast.html</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/compare.html</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/about.html</loc><priority>0.50</priority></url>
-  <url><loc>https://ratemyusername.fun/contact.html</loc><priority>0.50</priority></url>
-  <url><loc>https://ratemyusername.fun/privacy.html</loc><priority>0.50</priority></url>
+  <url><loc>https://ratemyusername.fun/roast</loc><priority>0.80</priority></url>
+  <url><loc>https://ratemyusername.fun/compare</loc><priority>0.80</priority></url>
+  <url><loc>https://ratemyusername.fun/about</loc><priority>0.50</priority></url>
+  <url><loc>https://ratemyusername.fun/contact</loc><priority>0.50</priority></url>
+  <url><loc>https://ratemyusername.fun/privacy</loc><priority>0.50</priority></url>
 
   <!-- Niche Platforms Username Ideas -->
   <url><loc>https://ratemyusername.fun/blog/</loc><priority>0.80</priority></url>
