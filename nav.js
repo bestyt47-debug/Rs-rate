@@ -38,9 +38,8 @@
 
   var FOCUS_MAP = {
     "compare.html": "cmp-input-1",
-    "versus.html": "cmp-input-1",
     "roast.html": "roast-input",
-    "hype.html": "gc-name",
+    "gamecard.html": "gc-name",
     "championship.html": "champ-input-1"
   };
 

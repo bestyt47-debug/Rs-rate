@@ -410,6 +410,7 @@
 
   function showView(name){
     Object.entries(views).forEach(([key, el]) => {
+      if (!el) return; // this page doesn't ship that view's markup — nothing to do
       if (key === name){
         el.hidden = false;
         el.classList.remove("view-leaving");
@@ -420,6 +421,18 @@
         setTimeout(() => { el.hidden = true; el.classList.remove("view-leaving"); }, 260);
       }
     });
+  }
+
+  // Used by cross-tool shortcuts that may point at a view this page doesn't
+  // carry (now that each page only ships its own tool's markup). Switches
+  // in-page when the view exists here; otherwise does a real navigation to
+  // that tool's dedicated page, matching how the other tool-card links work.
+  function goViewOrPage(name, href){
+    if (views[name]){
+      showView(name);
+    } else if (href){
+      window.location.href = href;
+    }
   }
 
   /* ========================================================
@@ -441,26 +454,29 @@
     return null;
   }
 
-  rateForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    const err = validateHandle(rateInput.value);
-    if (err){
-      rateError.textContent = err;
-      rateError.classList.add("show");
-      rateInput.focus();
-      return;
-    }
-    rateError.classList.remove("show");
-    const result = scoreUsername(rateInput.value);
-    showLoading(function(){
-      lastResult = result;
-      window.__RMU_LAST_RESULT__ = result; // read-only handoff for save.js; script.js does not depend on it
-      renderResult(result);
-      showView("result");
+  if (rateForm){
+    rateForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      const err = validateHandle(rateInput.value);
+      if (err){
+        rateError.textContent = err;
+        rateError.classList.add("show");
+        rateInput.focus();
+        return;
+      }
+      rateError.classList.remove("show");
+      const result = scoreUsername(rateInput.value);
+      showLoading(function(){
+        lastResult = result;
+        window.__RMU_LAST_RESULT__ = result; // read-only handoff for save.js; script.js does not depend on it
+        renderResult(result);
+        showView("result");
+      });
     });
-  });
+  }
 
-  document.getElementById("rate-another").addEventListener("click", function(){
+  const rateAnotherBtn = document.getElementById("rate-another");
+  if (rateAnotherBtn) rateAnotherBtn.addEventListener("click", function(){
     rateInput.value = "";
     rateError.classList.remove("show");
     showView("home");
@@ -523,16 +539,17 @@
   const goCompareBtn = document.getElementById("go-compare");
   if (goCompareBtn){
     goCompareBtn.addEventListener("click", function(){
-      showView("compare");
-      setTimeout(() => document.getElementById("cmp-input-1").focus(), 200);
+      goViewOrPage("compare", "compare.html");
+      setTimeout(() => { const el = document.getElementById("cmp-input-1"); if (el) el.focus(); }, 200);
     });
   }
-  document.getElementById("go-home").addEventListener("click", function(){ showView("home"); });
+  const goHomeBtn = document.getElementById("go-home");
+  if (goHomeBtn) goHomeBtn.addEventListener("click", function(){ goViewOrPage("home", "index.html"); });
 
   const compareForm = document.getElementById("compare-form");
   const cmpError = document.getElementById("compare-error");
 
-  compareForm.addEventListener("submit", function(e){
+  if (compareForm) compareForm.addEventListener("submit", function(e){
     e.preventDefault();
     const raw1 = document.getElementById("cmp-input-1").value;
     const raw2 = document.getElementById("cmp-input-2").value;
@@ -557,7 +574,8 @@
     });
   });
 
-  document.getElementById("run-it-back").addEventListener("click", function(){
+  const runItBackBtn = document.getElementById("run-it-back");
+  if (runItBackBtn) runItBackBtn.addEventListener("click", function(){
     document.getElementById("cmp-input-1").value = "";
     document.getElementById("cmp-input-2").value = "";
     cmpError.classList.remove("show");
@@ -624,7 +642,9 @@
      ENTER KEY SUPPORT (compare fields submit the compare form)
      ======================================================== */
   ["cmp-input-1", "cmp-input-2"].forEach(id => {
-    document.getElementById(id).addEventListener("keydown", function(e){
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("keydown", function(e){
       if (e.key === "Enter"){ e.preventDefault(); compareForm.requestSubmit(); }
     });
   });
@@ -638,14 +658,14 @@
   const toolChampionship = document.getElementById("tool-championship");
   if (toolChampionship){
     toolChampionship.addEventListener("click", function(){
-      showView("championship");
-      setTimeout(() => document.getElementById("champ-input-1").focus(), 200);
+      goViewOrPage("championship", "championship.html");
+      setTimeout(() => { const el = document.getElementById("champ-input-1"); if (el) el.focus(); }, 200);
     });
   }
 
   const champGoHome = document.getElementById("champ-go-home");
   if (champGoHome){
-    champGoHome.addEventListener("click", function(){ showView("home"); });
+    champGoHome.addEventListener("click", function(){ goViewOrPage("home", "index.html"); });
   }
 
   const championshipForm = document.getElementById("championship-form");
@@ -1156,7 +1176,7 @@
 
   const shareOverlay = document.getElementById("share-overlay");
   const shareCanvas = document.getElementById("share-canvas");
-  const ctx = shareCanvas.getContext("2d");
+  const ctx = shareCanvas ? shareCanvas.getContext("2d") : null;
 
   function drawRoundedRect(c, x, y, w, h, r){
     c.beginPath();
@@ -1265,43 +1285,49 @@
     }
   }
 
-  document.getElementById("share-btn").addEventListener("click", function(){
-    if (!lastResult) return;
-    openShare(lastResult);
-  });
+  if (shareOverlay && shareCanvas){
+    const shareBtn = document.getElementById("share-btn");
+    if (shareBtn) shareBtn.addEventListener("click", function(){
+      if (!lastResult) return;
+      openShare(lastResult);
+    });
 
-  document.getElementById("share-close").addEventListener("click", function(){
-    shareOverlay.classList.remove("open");
-  });
-  shareOverlay.addEventListener("click", function(e){
-    if (e.target === shareOverlay) shareOverlay.classList.remove("open");
-  });
+    const shareCloseBtn = document.getElementById("share-close");
+    if (shareCloseBtn) shareCloseBtn.addEventListener("click", function(){
+      shareOverlay.classList.remove("open");
+    });
+    shareOverlay.addEventListener("click", function(e){
+      if (e.target === shareOverlay) shareOverlay.classList.remove("open");
+    });
 
-  document.getElementById("share-download").addEventListener("click", function(){
-    if (!lastResult) return;
-    shareCanvas.toBlob(function(blob){
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "rate-my-username-" + lastResult.handle + ".png";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
-    }, "image/png");
-  });
+    const shareDownloadBtn = document.getElementById("share-download");
+    if (shareDownloadBtn) shareDownloadBtn.addEventListener("click", function(){
+      if (!lastResult) return;
+      shareCanvas.toBlob(function(blob){
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "rate-my-username-" + lastResult.handle + ".png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      }, "image/png");
+    });
 
-  document.getElementById("share-native").addEventListener("click", function(){
-    if (!lastResult) return;
-    shareCanvas.toBlob(async function(blob){
-      try{
-        const file = new File([blob], "rate-my-username.png", { type: "image/png" });
-        if (navigator.canShare({ files: [file] })){
-          await navigator.share({ files: [file], title: "rate my username.", text: "@" + lastResult.handle + " scored " + lastResult.overall + "/100" });
-        }
-      } catch(err){ /* user cancelled or share unsupported — silently ignore */ }
-    }, "image/png");
-  });
+    const shareNativeBtn = document.getElementById("share-native");
+    if (shareNativeBtn) shareNativeBtn.addEventListener("click", function(){
+      if (!lastResult) return;
+      shareCanvas.toBlob(async function(blob){
+        try{
+          const file = new File([blob], "rate-my-username.png", { type: "image/png" });
+          if (navigator.canShare({ files: [file] })){
+            await navigator.share({ files: [file], title: "rate my username.", text: "@" + lastResult.handle + " scored " + lastResult.overall + "/100" });
+          }
+        } catch(err){ /* user cancelled or share unsupported — silently ignore */ }
+      }, "image/png");
+    });
+  }
 
   /* ---------- tips for better usernames overlay ---------- */
   const tipsTab = document.getElementById("tips-tab");
@@ -1353,7 +1379,7 @@
 
   if (toolRate){
     toolRate.addEventListener("click", function(){
-      showView("home");
+      goViewOrPage("home", "index.html");
       const input = document.getElementById("rate-input");
       if (input) input.focus();
     });
@@ -1363,8 +1389,8 @@
       const goCompare = document.getElementById("go-compare");
       if (goCompare){
         goCompare.click();
-      } else if (typeof showView === "function"){
-        showView("compare");
+      } else {
+        goViewOrPage("compare", "compare.html");
         setTimeout(() => {
           const cmp1 = document.getElementById("cmp-input-1");
           if (cmp1) cmp1.focus();
@@ -1578,7 +1604,7 @@
     });
 
     if (gcGoHome){
-      gcGoHome.addEventListener("click", function(){ showView("home"); });
+      gcGoHome.addEventListener("click", function(){ goViewOrPage("home", "index.html"); });
     }
 
     // single-select option grids (game/social + style/background) —
@@ -1950,7 +1976,7 @@
     if (gcPosterGoHome){
       gcPosterGoHome.addEventListener("click", function(){
         closeEditPanel();
-        showView("home");
+        goViewOrPage("home", "index.html");
       });
     }
 
@@ -2831,14 +2857,14 @@
 
     if (roastGoHome){
       roastGoHome.addEventListener("click", function(){
-        showView("home");
+        goViewOrPage("home", "index.html");
       });
     }
 
     if (toolRoast){
       toolRoast.addEventListener("click", function(){
-        showView("roast");
-        setTimeout(() => roastInput.focus(), 200);
+        goViewOrPage("roast", "roast.html");
+        setTimeout(() => { if (roastInput) roastInput.focus(); }, 200);
       });
     }
 
@@ -3004,6 +3030,30 @@
   })();
 
   /* focus home input on load */
-  window.addEventListener("load", function(){ rateInput.focus(); });
+  /* ---------- cross-page tool-card fallback navigation ----------
+     Each page now ships only its own tool's view markup. When a
+     tool-card button's matching view isn't on this page (and it
+     isn't already a real link, like the other tool cards), send
+     the click to that tool's dedicated page instead of leaving
+     the button inert. */
+  (function(){
+    const TOOL_TARGETS = {
+      "tool-rate": { view: "view-home", href: "index.html" },
+      "tool-compare": { view: "view-compare", href: "compare.html" },
+      "tool-championship": { view: "view-championship", href: "championship.html" },
+      "tool-gamecard": { view: "view-gamecard", href: "gamecard.html" },
+      "tool-roast": { view: "view-roast", href: "roast.html" }
+    };
+    Object.keys(TOOL_TARGETS).forEach(function(id){
+      const btn = document.getElementById(id);
+      if (!btn || btn.tagName === "A") return; // real links already navigate fine
+      const cfg = TOOL_TARGETS[id];
+      if (!document.getElementById(cfg.view)){
+        btn.addEventListener("click", function(){ window.location.href = cfg.href; });
+      }
+    });
+  })();
+
+  window.addEventListener("load", function(){ if (rateInput) rateInput.focus(); });
 
 })();
