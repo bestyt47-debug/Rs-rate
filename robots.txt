@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://ratemyusername.fun/sitemap.xml
+# AI-crawler reference file (llms.txt convention): https://ratemyusername.fun/llms.txt
