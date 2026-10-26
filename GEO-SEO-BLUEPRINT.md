@@ -11,7 +11,7 @@ Grounded in the actual repo: static HTML/CSS/JS, **Cloudflare Pages** (no build 
 
 **`og:image`/`twitter:image` are intentionally left out for now.** They briefly pointed at `/og/default.png`, a dynamic endpoint that doesn't exist yet (Part 3 below) — that's since been reverted so the current `index.html` is safe to deploy with no broken link previews. Once `functions/og/[handle].js` is actually built and deployed, add these two tags back:
 ```html
-<meta property="og:image" content="https://ratemyusername.fun/og/default.png?username=Guest&amp;aura=100&amp;vibe=Aesthetic">
+<meta property="og:image" content="https://ratemyusername.fun/og/default.png?username=Guest&amp;aura=100&amp;vibe=Aesthetic"
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
