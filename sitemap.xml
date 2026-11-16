@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Pages -->
-  <url><loc>https://ratemyusername.fun/</loc><priority>1.00</priority></url>
-  <url><loc>https://ratemyusername.fun/roast</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/compare</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/leaderboard</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/about</loc><priority>0.50</priority></url>
-  <url><loc>https://ratemyusername.fun/contact</loc><priority>0.50</priority></url>
-  <url><loc>https://ratemyusername.fun/privacy</loc><priority>0.50</priority></url>
-
-  <!-- Niche Platforms Username Ideas -->
-  <url><loc>https://ratemyusername.fun/blog/</loc><priority>0.80</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/discord-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/fortnite-name-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/github-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/instagram-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/minecraft-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/pinterest-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/reddit-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/roblox-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/snapchat-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/steam-profile-name-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/telegram-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/tiktok-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/twitch-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/twitter-x-username-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/xbox-gamertag-ideas/</loc><priority>0.90</priority></url>
-  <url><loc>https://ratemyusername.fun/blog/youtube-username-ideas/</loc><priority>0.90</priority></url>
+  <url><loc>https://ratemyusername.fun/</loc></url>
+  <url><loc>https://ratemyusername.fun/roast</loc></url>
+  <url><loc>https://ratemyusername.fun/compare</loc></url>
+  <url><loc>https://ratemyusername.fun/championship</loc></url>
+  <url><loc>https://ratemyusername.fun/gamecard</loc></url>
+  <url><loc>https://ratemyusername.fun/og-bio</loc></url>
+  <url><loc>https://ratemyusername.fun/leaderboard</loc></url>
+  <url><loc>https://ratemyusername.fun/about</loc></url>
+  <url><loc>https://ratemyusername.fun/contact</loc></url>
+  <url><loc>https://ratemyusername.fun/privacy</loc></url>
+  <url><loc>https://ratemyusername.fun/how-scoring-works</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/discord-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/fortnite-name-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/github-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/instagram-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/minecraft-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/pinterest-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/reddit-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/roblox-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/snapchat-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/steam-profile-name-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/telegram-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/tiktok-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/twitch-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/twitter-x-username-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/xbox-gamertag-ideas/</loc></url>
+  <url><loc>https://ratemyusername.fun/blog/youtube-username-ideas/</loc></url>
 </urlset>
